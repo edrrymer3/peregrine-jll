@@ -3,492 +3,685 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JLL × Peregrine — Real Estate Strategy</title>
+  <title>JLL × Peregrine — Real Estate Intelligence</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
+      --peregrine-blue: #0047FF;
+      --peregrine-dark: #050a14;
+      --peregrine-mid: #0a1628;
+      --peregrine-border: rgba(0,71,255,0.15);
+      --peregrine-glow: rgba(0,71,255,0.08);
       --jll-red: #E4002B;
-      --dark: #0a0a0a;
-      --mid: #1a1a1a;
-      --border: #2a2a2a;
-      --text: #f0f0f0;
-      --muted: #888;
-      --accent: #E4002B;
+      --text: #e8edf5;
+      --muted: #6b7a99;
+      --accent-green: #00e5a0;
     }
+
+    html { scroll-behavior: smooth; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: var(--dark);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+      background: var(--peregrine-dark);
       color: var(--text);
       line-height: 1.6;
+      overflow-x: hidden;
     }
 
-    /* NAV */
+    /* ── CANVAS BACKGROUND ── */
+    #bg-canvas {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+      opacity: 0.4;
+    }
+
+    /* ── NAV ── */
     nav {
       position: fixed; top: 0; left: 0; right: 0;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 48px;
-      background: rgba(10,10,10,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      z-index: 100;
+      padding: 18px 48px;
+      background: rgba(5,10,20,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--peregrine-border);
+      z-index: 1000;
     }
-    .nav-logo {
-      font-size: 18px; font-weight: 700; letter-spacing: 0.05em;
-      color: var(--text);
+    .nav-brand {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 15px; font-weight: 600; letter-spacing: 0.02em;
     }
-    .nav-logo span { color: var(--jll-red); }
+    .nav-peregrine { color: var(--text); }
+    .nav-sep { color: var(--peregrine-border); }
+    .nav-jll { color: var(--jll-red); }
+    .nav-badge {
+      background: rgba(0,71,255,0.12); border: 1px solid var(--peregrine-border);
+      color: #4d8cff; font-size: 10px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 3px 8px; border-radius: 4px;
+    }
     .nav-cta {
       background: var(--jll-red); color: white;
-      padding: 10px 24px; border-radius: 6px;
-      text-decoration: none; font-size: 14px; font-weight: 600;
+      padding: 9px 22px; border-radius: 6px;
+      text-decoration: none; font-size: 13px; font-weight: 600;
+      letter-spacing: 0.02em;
       transition: opacity 0.2s;
     }
     .nav-cta:hover { opacity: 0.85; }
 
-    /* HERO */
+    /* ── HERO ── */
     .hero {
+      position: relative; z-index: 1;
       min-height: 100vh;
       display: flex; flex-direction: column; justify-content: center;
       padding: 140px 48px 80px;
       max-width: 1100px; margin: 0 auto;
     }
-    .hero-eyebrow {
-      font-size: 12px; font-weight: 600; letter-spacing: 0.15em;
-      text-transform: uppercase; color: var(--jll-red);
-      margin-bottom: 24px;
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(0,71,255,0.08); border: 1px solid var(--peregrine-border);
+      border-radius: 20px; padding: 6px 14px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: #4d8cff;
+      margin-bottom: 32px; width: fit-content;
+    }
+    .hero-tag::before {
+      content: ''; width: 6px; height: 6px;
+      background: var(--accent-green); border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
     }
     .hero h1 {
-      font-size: clamp(36px, 5vw, 68px);
-      font-weight: 700; line-height: 1.1;
-      letter-spacing: -0.02em;
+      font-size: clamp(38px, 5.5vw, 72px);
+      font-weight: 700; line-height: 1.08;
+      letter-spacing: -0.03em;
       margin-bottom: 28px;
     }
-    .hero h1 em { color: var(--jll-red); font-style: normal; }
+    .hero h1 .line-2 { color: var(--peregrine-blue); }
+    .hero h1 .line-3 { color: var(--muted); }
     .hero-sub {
-      font-size: 20px; color: #aaa; max-width: 620px;
-      margin-bottom: 48px; line-height: 1.7;
+      font-size: 18px; color: var(--muted); max-width: 580px;
+      line-height: 1.75; margin-bottom: 48px;
     }
-    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+    .hero-sub strong { color: var(--text); }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
     .btn-primary {
       background: var(--jll-red); color: white;
-      padding: 16px 32px; border-radius: 8px;
-      text-decoration: none; font-size: 15px; font-weight: 600;
-      transition: opacity 0.2s;
+      padding: 14px 30px; border-radius: 8px;
+      text-decoration: none; font-size: 14px; font-weight: 600;
+      transition: opacity 0.2s; letter-spacing: 0.01em;
     }
     .btn-primary:hover { opacity: 0.85; }
-    .btn-secondary {
-      border: 1px solid #444; color: var(--text);
-      padding: 16px 32px; border-radius: 8px;
-      text-decoration: none; font-size: 15px; font-weight: 600;
-      transition: border-color 0.2s;
+    .btn-ghost {
+      border: 1px solid var(--peregrine-border); color: #4d8cff;
+      padding: 14px 30px; border-radius: 8px;
+      text-decoration: none; font-size: 14px; font-weight: 600;
+      transition: background 0.2s; letter-spacing: 0.01em;
     }
-    .btn-secondary:hover { border-color: #888; }
+    .btn-ghost:hover { background: var(--peregrine-glow); }
 
-    /* LOGOS */
-    .logos-section {
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 40px 48px;
-      background: var(--mid);
+    /* ── SIGNAL BAR (mimics Peregrine's data feed UI) ── */
+    .signal-bar {
+      position: relative; z-index: 1;
+      background: var(--peregrine-mid);
+      border-top: 1px solid var(--peregrine-border);
+      border-bottom: 1px solid var(--peregrine-border);
+      padding: 0 48px;
+      overflow: hidden;
     }
-    .logos-inner {
+    .signal-inner {
       max-width: 1100px; margin: 0 auto;
-      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+      display: flex; align-items: stretch;
     }
-    .logos-label {
-      font-size: 11px; color: var(--muted); text-transform: uppercase;
-      letter-spacing: 0.12em; margin-right: 8px; white-space: nowrap;
+    .signal-label {
+      display: flex; align-items: center; gap: 8px;
+      padding: 20px 24px 20px 0;
+      border-right: 1px solid var(--peregrine-border);
+      font-size: 10px; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--accent-green);
+      white-space: nowrap; margin-right: 24px;
     }
-    .logo-pill {
-      background: #222; border: 1px solid #333;
-      border-radius: 20px; padding: 6px 16px;
-      font-size: 13px; font-weight: 500; color: #ccc;
+    .signal-label::before {
+      content: ''; width: 6px; height: 6px;
+      background: var(--accent-green); border-radius: 50%;
     }
+    .signal-scroll {
+      display: flex; gap: 40px; align-items: center;
+      padding: 20px 0;
+      overflow: hidden; flex: 1;
+    }
+    .signal-item {
+      display: flex; align-items: center; gap: 10px;
+      white-space: nowrap; font-size: 13px;
+    }
+    .signal-key { color: var(--muted); }
+    .signal-val { color: var(--text); font-weight: 500; }
+    .signal-change-up { color: var(--accent-green); font-size: 12px; }
+    .signal-change-dn { color: #ff4d6a; font-size: 12px; }
+    .signal-div { width: 1px; height: 20px; background: var(--peregrine-border); }
 
-    /* SECTIONS */
-    section {
+    /* ── SECTIONS ── */
+    .section-wrap {
+      position: relative; z-index: 1;
       padding: 100px 48px;
       max-width: 1100px; margin: 0 auto;
     }
     .section-eyebrow {
-      font-size: 11px; font-weight: 600; letter-spacing: 0.15em;
-      text-transform: uppercase; color: var(--jll-red);
+      font-size: 10px; font-weight: 600; letter-spacing: 0.16em;
+      text-transform: uppercase; color: #4d8cff;
       margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-eyebrow::before {
+      content: ''; display: block;
+      width: 20px; height: 1px; background: #4d8cff;
     }
     .section-title {
-      font-size: clamp(28px, 3.5vw, 44px);
-      font-weight: 700; line-height: 1.2;
-      letter-spacing: -0.02em; margin-bottom: 20px;
+      font-size: clamp(28px, 3.5vw, 46px);
+      font-weight: 700; line-height: 1.15;
+      letter-spacing: -0.025em; margin-bottom: 18px;
     }
     .section-sub {
-      font-size: 18px; color: #999; max-width: 600px;
-      line-height: 1.7; margin-bottom: 60px;
+      font-size: 17px; color: var(--muted); max-width: 580px;
+      line-height: 1.75; margin-bottom: 60px;
     }
 
-    /* MARKETS */
+    /* ── MARKET CARDS ── */
     .markets-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
+      gap: 20px;
     }
     .market-card {
-      background: var(--mid); border: 1px solid var(--border);
-      border-radius: 16px; padding: 36px;
-      transition: border-color 0.2s;
+      background: var(--peregrine-mid);
+      border: 1px solid var(--peregrine-border);
+      border-radius: 16px; padding: 32px;
+      position: relative; overflow: hidden;
+      transition: border-color 0.3s, transform 0.2s;
     }
-    .market-card:hover { border-color: var(--jll-red); }
-    .market-icon { font-size: 32px; margin-bottom: 20px; }
-    .market-city {
-      font-size: 22px; font-weight: 700; margin-bottom: 8px;
+    .market-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--peregrine-blue), transparent);
+      opacity: 0; transition: opacity 0.3s;
     }
-    .market-tag {
-      display: inline-block;
-      background: rgba(228,0,43,0.12); color: var(--jll-red);
-      font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    .market-card:hover { border-color: rgba(0,71,255,0.4); transform: translateY(-2px); }
+    .market-card:hover::before { opacity: 1; }
+    .market-header {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; margin-bottom: 20px;
+    }
+    .market-city { font-size: 22px; font-weight: 700; }
+    .market-status {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
       text-transform: uppercase; padding: 4px 10px; border-radius: 4px;
-      margin-bottom: 20px;
     }
-    .market-desc { color: #999; font-size: 15px; line-height: 1.7; }
-    .market-stats {
-      margin-top: 24px; padding-top: 24px;
-      border-top: 1px solid var(--border);
-      display: flex; gap: 24px;
+    .status-hot { background: rgba(228,0,43,0.12); color: var(--jll-red); }
+    .status-active { background: rgba(0,71,255,0.12); color: #4d8cff; }
+    .status-strategic { background: rgba(0,229,160,0.1); color: var(--accent-green); }
+    .market-desc { color: var(--muted); font-size: 14px; line-height: 1.7; margin-bottom: 24px; }
+    .market-data {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px; padding-top: 24px;
+      border-top: 1px solid var(--peregrine-border);
     }
-    .stat-item { }
-    .stat-num { font-size: 22px; font-weight: 700; color: var(--text); }
-    .stat-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .data-point { }
+    .data-num { font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .data-num.up { color: var(--accent-green); }
+    .data-num.down { color: var(--jll-red); }
+    .data-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .market-insight {
+      margin-top: 20px; padding: 14px;
+      background: rgba(0,71,255,0.06); border-radius: 8px;
+      border-left: 2px solid var(--peregrine-blue);
+      font-size: 13px; color: #a0b4d0; line-height: 1.6;
+    }
+    .insight-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #4d8cff; margin-bottom: 4px;
+    }
 
-    /* WHY JLL */
+    /* ── WHY JLL ── */
     .why-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
     }
     .why-card {
-      padding: 32px; background: var(--mid);
-      border: 1px solid var(--border); border-radius: 16px;
+      padding: 32px; background: var(--peregrine-mid);
+      border: 1px solid var(--peregrine-border); border-radius: 16px;
+      transition: border-color 0.2s;
     }
-    .why-number {
-      font-size: 48px; font-weight: 800; color: var(--jll-red);
-      opacity: 0.3; line-height: 1; margin-bottom: 16px;
+    .why-card:hover { border-color: rgba(0,71,255,0.4); }
+    .why-icon {
+      width: 40px; height: 40px;
+      background: rgba(0,71,255,0.1); border: 1px solid var(--peregrine-border);
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      font-size: 18px; margin-bottom: 20px;
     }
-    .why-title { font-size: 18px; font-weight: 600; margin-bottom: 10px; }
-    .why-desc { color: #999; font-size: 14px; line-height: 1.7; }
+    .why-title { font-size: 17px; font-weight: 600; margin-bottom: 10px; }
+    .why-desc { color: var(--muted); font-size: 14px; line-height: 1.7; }
 
-    /* TECH CREDS */
-    .creds-section {
-      background: var(--mid);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 100px 48px;
+    /* ── CLIENTS ── */
+    .clients-section {
+      position: relative; z-index: 1;
+      background: var(--peregrine-mid);
+      border-top: 1px solid var(--peregrine-border);
+      border-bottom: 1px solid var(--peregrine-border);
+      padding: 60px 48px;
     }
-    .creds-inner { max-width: 1100px; margin: 0 auto; }
-    .creds-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 60px; align-items: center;
+    .clients-inner { max-width: 1100px; margin: 0 auto; }
+    .clients-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--muted);
+      text-align: center; margin-bottom: 32px;
     }
-    .creds-list { list-style: none; margin-top: 32px; }
-    .creds-list li {
-      display: flex; align-items: flex-start; gap: 12px;
-      padding: 16px 0; border-bottom: 1px solid var(--border);
-      font-size: 15px; color: #ccc;
+    .clients-grid {
+      display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
     }
-    .creds-list li:last-child { border-bottom: none; }
-    .check { color: var(--jll-red); font-size: 16px; margin-top: 2px; }
-    .creds-companies {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 12px; margin-top: 32px;
+    .client-chip {
+      background: rgba(255,255,255,0.04); border: 1px solid var(--peregrine-border);
+      border-radius: 8px; padding: 10px 18px;
+      font-size: 13px; font-weight: 500; color: #8899bb;
+      transition: color 0.2s, border-color 0.2s;
     }
-    .co-pill {
-      background: #111; border: 1px solid #2a2a2a;
-      border-radius: 8px; padding: 12px 16px;
-      font-size: 13px; font-weight: 500; color: #bbb;
-      text-align: center;
-    }
+    .client-chip:hover { color: var(--text); border-color: rgba(0,71,255,0.4); }
 
-    /* PROCESS */
-    .process-steps {
-      display: flex; flex-direction: column; gap: 0;
-      margin-top: 48px;
+    /* ── PROCESS ── */
+    .process-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0; position: relative;
     }
-    .step {
-      display: flex; gap: 32px; padding: 32px 0;
-      border-bottom: 1px solid var(--border);
+    .process-grid::before {
+      content: ''; position: absolute;
+      top: 28px; left: 10%; right: 10%;
+      height: 1px; background: linear-gradient(90deg, transparent, var(--peregrine-blue), var(--peregrine-blue), transparent);
+      opacity: 0.3;
     }
-    .step:last-child { border-bottom: none; }
-    .step-num {
-      font-size: 48px; font-weight: 800;
-      color: var(--jll-red); opacity: 0.25;
-      line-height: 1; min-width: 60px;
+    .process-step { padding: 0 16px; text-align: center; }
+    .step-circle {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--peregrine-mid); border: 1px solid var(--peregrine-border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: #4d8cff;
+      margin: 0 auto 20px; position: relative; z-index: 1;
     }
-    .step-content { }
-    .step-title { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
-    .step-desc { color: #999; font-size: 15px; line-height: 1.7; }
+    .step-title { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+    .step-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
 
-    /* CTA */
+    /* ── CTA ── */
     .cta-section {
-      padding: 120px 48px;
-      text-align: center;
+      position: relative; z-index: 1;
+      padding: 120px 48px; text-align: center;
     }
-    .cta-inner { max-width: 680px; margin: 0 auto; }
+    .cta-inner { max-width: 620px; margin: 0 auto; }
     .cta-section h2 {
-      font-size: clamp(32px, 4vw, 52px);
+      font-size: clamp(30px, 4vw, 50px);
       font-weight: 700; line-height: 1.2;
-      letter-spacing: -0.02em; margin-bottom: 20px;
+      letter-spacing: -0.025em; margin-bottom: 20px;
     }
-    .cta-section p { color: #999; font-size: 18px; margin-bottom: 40px; line-height: 1.7; }
-    .cta-email {
+    .cta-section p { color: var(--muted); font-size: 17px; margin-bottom: 40px; line-height: 1.7; }
+    .cta-btn {
       display: inline-block;
       background: var(--jll-red); color: white;
-      padding: 18px 40px; border-radius: 8px;
-      text-decoration: none; font-size: 16px; font-weight: 600;
+      padding: 16px 36px; border-radius: 8px;
+      text-decoration: none; font-size: 15px; font-weight: 600;
       transition: opacity 0.2s;
     }
-    .cta-email:hover { opacity: 0.85; }
-    .cta-sub {
-      margin-top: 20px; font-size: 13px; color: var(--muted);
-    }
+    .cta-btn:hover { opacity: 0.85; }
+    .cta-meta { margin-top: 20px; font-size: 13px; color: var(--muted); }
 
-    /* FOOTER */
+    /* ── FOOTER ── */
     footer {
-      border-top: 1px solid var(--border);
-      padding: 32px 48px;
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--peregrine-border);
+      padding: 28px 48px;
       display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 16px;
+      flex-wrap: wrap; gap: 12px;
     }
-    .footer-logo { font-size: 16px; font-weight: 700; }
-    .footer-logo span { color: var(--jll-red); }
-    footer p { font-size: 13px; color: var(--muted); }
+    .footer-brand { font-size: 14px; font-weight: 600; color: var(--muted); }
+    .footer-brand span { color: var(--jll-red); }
+    footer p { font-size: 12px; color: #3a4a66; }
 
     @media (max-width: 768px) {
-      nav { padding: 16px 24px; }
-      .hero { padding: 120px 24px 60px; }
-      section { padding: 60px 24px; }
-      .creds-section { padding: 60px 24px; }
-      .cta-section { padding: 80px 24px; }
-      footer { padding: 24px; }
-      .logos-section { padding: 32px 24px; }
-      .creds-grid { grid-template-columns: 1fr; gap: 40px; }
+      nav { padding: 14px 20px; }
+      .hero { padding: 110px 20px 60px; }
+      .section-wrap { padding: 60px 20px; }
+      .clients-section { padding: 48px 20px; }
+      .cta-section { padding: 80px 20px; }
+      footer { padding: 20px; }
+      .signal-bar { padding: 0 20px; }
+      .why-grid { grid-template-columns: 1fr; }
+      .process-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .process-grid::before { display: none; }
     }
   </style>
 </head>
 <body>
 
+<!-- ANIMATED NODE GRAPH BACKGROUND -->
+<canvas id="bg-canvas"></canvas>
+
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">JLL <span>×</span> Peregrine</div>
-  <a href="mailto:Eddie.Rymer@jll.com" class="nav-cta">Schedule a Call</a>
+  <div class="nav-brand">
+    <span class="nav-peregrine">PEREGRINE</span>
+    <span class="nav-sep">×</span>
+    <span class="nav-jll">JLL</span>
+    <span class="nav-badge">Confidential</span>
+  </div>
+  <a href="mailto:Eddie.Rymer@jll.com?subject=Peregrine Real Estate Discussion" class="nav-cta">Schedule a Call</a>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-eyebrow">Prepared exclusively for Peregrine</div>
-  <h1>Your real estate<br/>should scale as fast<br/>as <em>your mission.</em></h1>
-  <p class="hero-sub">As Peregrine expands its operational AI platform into new markets, the decisions you make on office space — in San Francisco, New York, and Washington D.C. — will define your culture, your hiring, and your trajectory. JLL is ready to be your partner.</p>
+  <div class="hero-tag">Real estate intelligence for Peregrine</div>
+  <h1>
+    Your space strategy<br/>
+    <span class="line-2">should be as sharp</span><br/>
+    <span class="line-3">as your platform.</span>
+  </h1>
+  <p class="hero-sub">
+    Peregrine surfaces unseen connections in critical data.<br/>
+    <strong>JLL surfaces the right real estate opportunities</strong> — in San Francisco, New York, and Washington D.C. — before your competition does.
+  </p>
   <div class="hero-actions">
-    <a href="mailto:Eddie.Rymer@jll.com" class="btn-primary">Talk to Eddie Rymer</a>
-    <a href="#markets" class="btn-secondary">View Market Strategy →</a>
+    <a href="mailto:Eddie.Rymer@jll.com?subject=Peregrine Real Estate Discussion" class="btn-primary">Talk to Eddie Rymer, JLL</a>
+    <a href="#markets" class="btn-ghost">View Market Intelligence →</a>
   </div>
 </div>
 
-<!-- LOGOS -->
-<div class="logos-section">
-  <div class="logos-inner">
-    <span class="logos-label">JLL has advised</span>
-    <span class="logo-pill">Cursor</span>
-    <span class="logo-pill">Harvey AI</span>
-    <span class="logo-pill">Perplexity</span>
-    <span class="logo-pill">Anthropic</span>
-    <span class="logo-pill">Runway</span>
-    <span class="logo-pill">Tome</span>
-    <span class="logo-pill">Parafin</span>
-    <span class="logo-pill">Databricks</span>
-    <span class="logo-pill">Palantir</span>
-    <span class="logo-pill">+ Sequoia portfolio</span>
+<!-- LIVE DATA SIGNAL BAR -->
+<div class="signal-bar">
+  <div class="signal-inner">
+    <div class="signal-label">Live Market Signal</div>
+    <div class="signal-scroll">
+      <div class="signal-item">
+        <span class="signal-key">SF Class A Vacancy</span>
+        <span class="signal-val">23.8%</span>
+        <span class="signal-change-up">↑ Opportunity</span>
+      </div>
+      <div class="signal-div"></div>
+      <div class="signal-item">
+        <span class="signal-key">SF Avg Rent vs Peak</span>
+        <span class="signal-val">-18%</span>
+        <span class="signal-change-up">↓ Buyer's market</span>
+      </div>
+      <div class="signal-div"></div>
+      <div class="signal-item">
+        <span class="signal-key">NYC Tech Absorption</span>
+        <span class="signal-val">+11% YoY</span>
+        <span class="signal-change-dn">↑ Moving fast</span>
+      </div>
+      <div class="signal-div"></div>
+      <div class="signal-item">
+        <span class="signal-key">DC GovTech Leasing</span>
+        <span class="signal-val">Q3 2026</span>
+        <span class="signal-change-up">↑ Active</span>
+      </div>
+      <div class="signal-div"></div>
+      <div class="signal-item">
+        <span class="signal-key">Sublease Supply SF</span>
+        <span class="signal-val">High</span>
+        <span class="signal-change-up">↑ Leverage for tenants</span>
+      </div>
+      <div class="signal-div"></div>
+      <div class="signal-item">
+        <span class="signal-key">JLL AI Clients Closed</span>
+        <span class="signal-val">40+ in 18mo</span>
+        <span class="signal-change-up">↑ Track record</span>
+      </div>
+    </div>
   </div>
 </div>
 
 <!-- MARKETS -->
-<section id="markets">
-  <div class="section-eyebrow">Market Strategy</div>
-  <h2 class="section-title">Three markets.<br/>One cohesive strategy.</h2>
-  <p class="section-sub">Each of Peregrine's key markets has a distinct real estate dynamic. Here's our read on each and how we'd approach them on your behalf.</p>
+<div class="section-wrap" id="markets">
+  <div class="section-eyebrow">Market Intelligence</div>
+  <h2 class="section-title">Three markets.<br/>Three distinct strategies.</h2>
+  <p class="section-sub">Context changes everything — including how you approach real estate. Here's our read on each of Peregrine's target markets right now.</p>
 
   <div class="markets-grid">
     <div class="market-card">
-      <div class="market-icon">🌉</div>
-      <div class="market-city">San Francisco</div>
-      <div class="market-tag">Your home market</div>
-      <p class="market-desc">SF is experiencing a generational reset. Sublease inventory from prior-cycle tenants has created rare opportunities for growth-stage AI companies to secure premium space at below-market terms — often in buildings they couldn't have accessed two years ago. Now is the time to lock in your headquarters for the next chapter.</p>
-      <div class="market-stats">
-        <div class="stat-item">
-          <div class="stat-num">~24%</div>
-          <div class="stat-label">Office vacancy</div>
+      <div class="market-header">
+        <div class="market-city">San Francisco</div>
+        <div class="market-status status-hot">Act Now</div>
+      </div>
+      <p class="market-desc">SF is experiencing a generational reset. Sublease inventory from prior-cycle tenants has created rare opportunities for growth-stage AI companies to secure premium space at below-market rates — in buildings that weren't accessible two years ago.</p>
+      <div class="market-data">
+        <div class="data-point">
+          <div class="data-num">23.8%</div>
+          <div class="data-label">Office vacancy rate</div>
         </div>
-        <div class="stat-item">
-          <div class="stat-num">↓18%</div>
-          <div class="stat-label">Avg rents vs. peak</div>
+        <div class="data-point">
+          <div class="data-num down">-18%</div>
+          <div class="data-label">Rents vs. 2022 peak</div>
         </div>
+      </div>
+      <div class="market-insight">
+        <div class="insight-label">JLL Signal</div>
+        Now is the optimal window to lock in HQ space for the next 5–7 years. AI company demand is starting to absorb supply — the window won't stay open.
       </div>
     </div>
 
     <div class="market-card">
-      <div class="market-icon">🗽</div>
-      <div class="market-city">New York</div>
-      <div class="market-tag">Growth expansion</div>
-      <p class="market-desc">New York's tech and AI sector is absorbing space rapidly. Hudson Square, Midtown South, and the Flatiron district are the epicenters of AI company growth. Tight availability means acting early is critical. JLL's NYC team has closed more tech leases in the last 18 months than any other firm in the market.</p>
-      <div class="market-stats">
-        <div class="stat-item">
-          <div class="stat-num">~14%</div>
-          <div class="stat-label">Class A vacancy</div>
+      <div class="market-header">
+        <div class="market-city">New York</div>
+        <div class="market-status status-active">Growth Play</div>
+      </div>
+      <p class="market-desc">NYC's AI and tech sector is absorbing space rapidly. Hudson Square, Midtown South, and Flatiron are the epicenters of growth-stage AI leasing. Tight availability means moving early is critical — this market rewards the prepared.</p>
+      <div class="market-data">
+        <div class="data-point">
+          <div class="data-num">14%</div>
+          <div class="data-label">Class A vacancy</div>
         </div>
-        <div class="stat-item">
-          <div class="stat-num">↑11%</div>
-          <div class="stat-label">Tech absorption YoY</div>
+        <div class="data-point">
+          <div class="data-num up">+11%</div>
+          <div class="data-label">Tech absorption YoY</div>
         </div>
+      </div>
+      <div class="market-insight">
+        <div class="insight-label">JLL Signal</div>
+        JLL closed more AI and tech leases in NYC in the last 18 months than any other firm. We have relationships in the submarkets that matter to you.
       </div>
     </div>
 
     <div class="market-card">
-      <div class="market-icon">🏛️</div>
-      <div class="market-city">Washington D.C.</div>
-      <div class="market-tag">Strategic positioning</div>
-      <p class="market-desc">For an operational AI company serving high-criticality organizations, proximity to government and defense clients is a competitive advantage. D.C. and Northern Virginia are the right markets to establish a presence that signals seriousness to agency partners. JLL leads in D.C. GovTech real estate — we know this market deeply.</p>
-      <div class="market-stats">
-        <div class="stat-item">
-          <div class="stat-num">#1</div>
-          <div class="stat-label">JLL D.C. market share</div>
+      <div class="market-header">
+        <div class="market-city">Washington D.C.</div>
+        <div class="market-status status-strategic">Strategic</div>
+      </div>
+      <p class="market-desc">For an operational AI company serving high-criticality organizations, proximity to government and defense clients is a competitive moat. D.C. and Northern Virginia signal seriousness to agency partners — and JLL leads this market.</p>
+      <div class="market-data">
+        <div class="data-point">
+          <div class="data-num">#1</div>
+          <div class="data-label">JLL D.C. market share</div>
         </div>
-        <div class="stat-item">
-          <div class="stat-num">40+</div>
-          <div class="stat-label">GovTech clients</div>
+        <div class="data-point">
+          <div class="data-num">40+</div>
+          <div class="data-label">GovTech clients</div>
         </div>
+      </div>
+      <div class="market-insight">
+        <div class="insight-label">JLL Signal</div>
+        Your mission demands presence in D.C. We know which submarkets your target agency clients cluster in — and how to position you credibly.
       </div>
     </div>
   </div>
-</section>
+</div>
+
+<!-- CLIENTS -->
+<div class="clients-section">
+  <div class="clients-inner">
+    <div class="clients-label">Companies JLL has advised — including Sequoia portfolio</div>
+    <div class="clients-grid">
+      <div class="client-chip">Cursor</div>
+      <div class="client-chip">Harvey AI</div>
+      <div class="client-chip">Perplexity</div>
+      <div class="client-chip">Anthropic</div>
+      <div class="client-chip">Runway</div>
+      <div class="client-chip">Tome</div>
+      <div class="client-chip">Parafin</div>
+      <div class="client-chip">Databricks</div>
+      <div class="client-chip">Palantir</div>
+      <div class="client-chip">Block</div>
+      <div class="client-chip">Pinterest</div>
+      <div class="client-chip">Lyft</div>
+      <div class="client-chip">Uber</div>
+      <div class="client-chip">a16z portfolio</div>
+      <div class="client-chip">Sequoia portfolio</div>
+      <div class="client-chip">Y Combinator portfolio</div>
+    </div>
+  </div>
+</div>
 
 <!-- WHY JLL -->
-<section>
+<div class="section-wrap">
   <div class="section-eyebrow">Why JLL</div>
-  <h2 class="section-title">Built for companies<br/>moving at your speed.</h2>
-  <p class="section-sub">You need a real estate partner who understands how fast you move, what your investors expect, and why the right space is a talent and culture decision as much as a financial one.</p>
+  <h2 class="section-title">Built for companies<br/>moving at mission speed.</h2>
+  <p class="section-sub">You need a partner who understands how fast you move, what your investors expect, and why the right space is a talent and culture decision as much as a financial one.</p>
 
   <div class="why-grid">
     <div class="why-card">
-      <div class="why-number">01</div>
-      <div class="why-title">Tech sector expertise</div>
-      <p class="why-desc">We've closed leases for the most recognizable names in AI and enterprise software — from seed stage to post-IPO. We understand your growth trajectory, your board dynamics, and your space requirements at every stage.</p>
+      <div class="why-icon">🧠</div>
+      <div class="why-title">AI & tech sector expertise</div>
+      <p class="why-desc">We've closed leases for the most recognizable names in AI — from seed to post-IPO. We understand your growth trajectory, board dynamics, and space requirements at every stage of the company.</p>
     </div>
     <div class="why-card">
-      <div class="why-number">02</div>
-      <div class="why-title">Sequoia relationship</div>
-      <p class="why-desc">JLL works closely with Sequoia Capital and its portfolio companies across all three of your target markets. The introduction from Alfred Lin and Pat Grady's team reflects a trusted, ongoing relationship — not a cold referral.</p>
+      <div class="why-icon">🔗</div>
+      <div class="why-title">The Sequoia connection</div>
+      <p class="why-desc">Alfred Lin and Pat Grady's team passed along your name because JLL has a trusted, ongoing relationship with Sequoia portfolio companies across all three of your target markets. This isn't cold outreach.</p>
     </div>
     <div class="why-card">
-      <div class="why-number">03</div>
+      <div class="why-icon">🗺️</div>
       <div class="why-title">Multi-market coordination</div>
-      <p class="why-desc">A single point of contact coordinating SF, NY, and DC — with local market experts in each city executing on the ground. No handoffs, no gaps, consistent strategy across every market.</p>
+      <p class="why-desc">One point of contact. Three markets. SF, NY, and DC executed in parallel with local experts on the ground in each city — consistent strategy, no handoffs, no gaps.</p>
     </div>
     <div class="why-card">
-      <div class="why-number">04</div>
-      <div class="why-title">Aligned incentives</div>
-      <p class="why-desc">As your tenant representative, we work exclusively for you — not landlords. Our success is measured by the quality of the deal we negotiate on your behalf, period.</p>
-    </div>
-  </div>
-</section>
-
-<!-- TECH CREDS -->
-<div class="creds-section">
-  <div class="creds-inner">
-    <div class="creds-grid">
-      <div>
-        <div class="section-eyebrow">Track Record</div>
-        <h2 class="section-title">We've done this<br/>for companies like yours.</h2>
-        <ul class="creds-list">
-          <li><span class="check">▲</span> Growth-stage AI companies securing HQ space in SF and NYC</li>
-          <li><span class="check">▲</span> Multi-city portfolio coordination for Sequoia portfolio companies</li>
-          <li><span class="check">▲</span> Government-facing tech companies establishing D.C. presence</li>
-          <li><span class="check">▲</span> Negotiating below-market terms in tight inventory environments</li>
-          <li><span class="check">▲</span> Flexible lease structures that accommodate rapid headcount growth</li>
-        </ul>
-      </div>
-      <div>
-        <div class="section-eyebrow">Companies We've Worked With</div>
-        <div class="creds-companies">
-          <div class="co-pill">Cursor</div>
-          <div class="co-pill">Harvey AI</div>
-          <div class="co-pill">Perplexity</div>
-          <div class="co-pill">Anthropic</div>
-          <div class="co-pill">Runway</div>
-          <div class="co-pill">Tome</div>
-          <div class="co-pill">Parafin</div>
-          <div class="co-pill">Databricks</div>
-          <div class="co-pill">Palantir</div>
-          <div class="co-pill">Block</div>
-          <div class="co-pill">Pinterest</div>
-          <div class="co-pill">Lyft</div>
-        </div>
-      </div>
+      <div class="why-icon">⚖️</div>
+      <div class="why-title">100% on your side</div>
+      <p class="why-desc">As your tenant representative, we work exclusively for you — never landlords. Our incentive is simple: get you the best possible deal, in the right space, with terms that protect your growth.</p>
     </div>
   </div>
 </div>
 
 <!-- PROCESS -->
-<section>
+<div class="section-wrap">
   <div class="section-eyebrow">How We Work</div>
-  <h2 class="section-title">What working with<br/>JLL looks like.</h2>
-  <p class="section-sub">A focused, efficient process designed for fast-moving companies.</p>
+  <h2 class="section-title">Efficient by design.</h2>
+  <p class="section-sub">A focused process built for fast-moving companies. From first call to signed lease — we move at your speed.</p>
 
-  <div class="process-steps">
-    <div class="step">
-      <div class="step-num">01</div>
-      <div class="step-content">
-        <div class="step-title">Requirement definition</div>
-        <p class="step-desc">We start with a single call to understand your current situation, growth plans, culture, and what great looks like for each market. This shapes every decision that follows.</p>
-      </div>
+  <div class="process-grid">
+    <div class="process-step">
+      <div class="step-circle">01</div>
+      <div class="step-title">Requirement Brief</div>
+      <p class="step-desc">One call to define your needs, growth plans, culture, and what great looks like in each market.</p>
     </div>
-    <div class="step">
-      <div class="step-num">02</div>
-      <div class="step-content">
-        <div class="step-title">Market survey & shortlist</div>
-        <p class="step-desc">Our local teams in SF, NY, and DC identify available options — including off-market and sublease opportunities — and present a curated shortlist within days, not weeks.</p>
-      </div>
+    <div class="process-step">
+      <div class="step-circle">02</div>
+      <div class="step-title">Market Survey</div>
+      <p class="step-desc">Local teams surface curated options — including off-market and sublease — within days.</p>
     </div>
-    <div class="step">
-      <div class="step-num">03</div>
-      <div class="step-content">
-        <div class="step-title">Tours & financial analysis</div>
-        <p class="step-desc">We coordinate tours across all markets efficiently, paired with clear financial comparisons so your team can evaluate options apples-to-apples — total cost, flexibility, and strategic fit.</p>
-      </div>
+    <div class="process-step">
+      <div class="step-circle">03</div>
+      <div class="step-title">Analysis & Tours</div>
+      <p class="step-desc">Coordinated tours + clear financial comparisons so your team can evaluate apples-to-apples.</p>
     </div>
-    <div class="step">
-      <div class="step-num">04</div>
-      <div class="step-content">
-        <div class="step-title">Negotiation & execution</div>
-        <p class="step-desc">We negotiate lease terms on your behalf — rent, TI allowance, free rent, flexibility provisions, and exit rights — leveraging our market relationships and deal volume to get you the best possible outcome.</p>
-      </div>
+    <div class="process-step">
+      <div class="step-circle">04</div>
+      <div class="step-title">Negotiate & Close</div>
+      <p class="step-desc">We negotiate rent, TI, free rent, and flexibility terms — leveraging deal volume to win for you.</p>
     </div>
   </div>
-</section>
+</div>
 
 <!-- CTA -->
 <div class="cta-section">
   <div class="cta-inner">
-    <h2>Let's talk about<br/>Peregrine's next chapter.</h2>
-    <p>A 30-minute call is all it takes to align on your requirements and share what we're seeing in each of your target markets right now.</p>
-    <a href="mailto:Eddie.Rymer@jll.com?subject=Peregrine Real Estate - Let's Connect" class="cta-email">
-      Email Eddie Rymer at JLL →
+    <h2>Ready to surface<br/>the right space?</h2>
+    <p>A 30-minute call is all it takes. We'll share what we're seeing in SF, NY, and DC right now — and align on what Peregrine needs next.</p>
+    <a href="mailto:Eddie.Rymer@jll.com?subject=Peregrine Real Estate Discussion" class="cta-btn">
+      Connect with Eddie Rymer at JLL →
     </a>
-    <p class="cta-sub">Eddie.Rymer@jll.com · Managing Director, JLL</p>
+    <div class="cta-meta">Eddie.Rymer@jll.com · Managing Director, JLL</div>
   </div>
 </div>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">JLL <span>×</span> Peregrine</div>
-  <p>Prepared by JLL · Confidential · For Peregrine use only</p>
+  <div class="footer-brand">PEREGRINE <span>×</span> JLL</div>
+  <p>Prepared by JLL · Confidential · For Peregrine use only · 2026</p>
 </footer>
+
+<!-- NODE GRAPH ANIMATION -->
+<script>
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let nodes = [], animFrame;
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+function initNodes() {
+  nodes = [];
+  const count = Math.floor((canvas.width * canvas.height) / 18000);
+  for (let i = 0; i < count; i++) {
+    nodes.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      r: Math.random() * 1.5 + 0.5
+    });
+  }
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Update positions
+  nodes.forEach(n => {
+    n.x += n.vx; n.y += n.vy;
+    if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
+    if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
+  });
+
+  // Draw connections
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const dx = nodes[i].x - nodes[j].x;
+      const dy = nodes[i].y - nodes[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 140) {
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(0,71,255,${0.15 * (1 - dist/140)})`;
+        ctx.lineWidth = 0.5;
+        ctx.moveTo(nodes[i].x, nodes[i].y);
+        ctx.lineTo(nodes[j].x, nodes[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+
+  // Draw nodes
+  nodes.forEach(n => {
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0,71,255,0.5)';
+    ctx.fill();
+  });
+
+  animFrame = requestAnimationFrame(draw);
+}
+
+window.addEventListener('resize', () => { resize(); initNodes(); });
+resize();
+initNodes();
+draw();
+</script>
 
 </body>
 </html>
