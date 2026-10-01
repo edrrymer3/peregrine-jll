@@ -367,9 +367,14 @@
 <!-- NAV -->
 <nav>
   <div class="nav-brand">
-    <span class="nav-peregrine">PEREGRINE</span>
-    <span class="nav-sep">×</span>
-    <span class="nav-jll">JLL</span>
+    <img src="https://i.imgur.com/placeholder.png" onerror="this.style.display='none'" style="height:24px;" alt="" />
+    <span class="nav-peregrine" style="font-size:16px;font-weight:700;letter-spacing:0.05em;">PEREGRINE</span>
+    <span class="nav-sep" style="color:#444;font-size:18px;">×</span>
+    <span style="display:inline-flex;align-items:center;">
+      <svg width="48" height="20" viewBox="0 0 48 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <text x="0" y="16" font-family="Arial Black, Arial" font-weight="900" font-size="18" fill="#E4002B">JLL</text>
+      </svg>
+    </span>
     <span class="nav-badge">Confidential</span>
   </div>
 
@@ -599,13 +604,14 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 (function() {
-  const companies = ['Harvey', 'Pagerduty', 'Vercel', 'Block', 'Coinbase', 'Stitch Fix', 'Roblox', 'X1', 'Lyft', 'Perplexity', 'Wealthfront', 'OpenAI', 'Anthropic'];
+  // Exact data from JLL track record slide
+  const companies = ['Harvey', 'Pagerduty', 'Vercel', 'Block', 'Coinbase', 'Stitch Fix', 'Roblox', 'X (Twitter)', 'Lyft', 'Perplexity', 'Wealthfront', 'OpenAI', 'Anthropic'];
   const phases = [
-    { label: 'Phase 1', color: '#FF5C00', data: [3000,6345,6000,7500,4000,11000,3500,10000,18000,6000,10000,90000,5000] },
-    { label: 'Phase 2', color: '#d4a000', data: [12000,25000,10000,18000,28000,28000,7800,30000,65000,24000,25000,0,15000] },
-    { label: 'Phase 3', color: '#2a6b3a', data: [43000,45000,40000,75000,95000,38000,0,140000,180000,0,60000,140000,45000] },
-    { label: 'Phase 4', color: '#555', data: [65000,95000,70000,160000,140000,0,78000,0,300000,80000,45000,450000,0] },
-    { label: 'Phase 5', color: '#1a3a6b', data: [110000,120000,230000,300000,0,0,450000,400000,0,140000,0,850000,235000] },
+    { label: 'Phase 1', color: '#c0392b', data: [3000,6345,6000,7500,4000,11000,3500,10000,18000,6000,10000,90000,5000] },
+    { label: 'Phase 2', color: '#7fb3d3', data: [12000,25000,10000,18000,28000,28000,7800,30000,65000,24000,25000,450000,15000] },
+    { label: 'Phase 3', color: '#7dbb7d', data: [43000,45000,40000,75000,95000,38000,0,140000,180000,45000,60000,850000,140000] },
+    { label: 'Phase 4', color: '#d4892a', data: [65000,93000,70000,160000,140000,75000,78000,400000,300000,80000,80000,1000000,235000] },
+    { label: 'Phase 5', color: '#555', data: [110000,120000,230000,300000,160000,0,450000,0,0,140000,180000,0,800000] },
   ];
 
   const ctx = document.getElementById('trackChart').getContext('2d');
@@ -722,8 +728,12 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-brand">PEREGRINE <span>×</span> JLL</div>
-  <p>Prepared by JLL · Confidential · For Peregrine use only · 2026</p>
+  <div style="display:flex;align-items:center;gap:20px;">
+    <span style="font-size:15px;font-weight:700;letter-spacing:0.08em;color:#fff;">⬡ PEREGRINE</span>
+    <span style="color:#333;font-size:20px;">|</span>
+    <span style="font-size:22px;font-weight:900;color:#E4002B;letter-spacing:0.02em;">JLL</span>
+  </div>
+  <p style="font-size:12px;color:#3a4a66;">Prepared by JLL · Confidential · For Peregrine use only · 2026</p>
 </footer>
 
 <!-- NODE GRAPH ANIMATION -->
